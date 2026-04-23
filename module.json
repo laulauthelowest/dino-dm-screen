@@ -1,0 +1,15 @@
+{
+  "id": "dino-dm-screen",
+  "title": "Dino Island – DM Screen",
+  "description": "Ein interaktiver DM Screen für Escape from Dino Island mit Zufallstabellen, Mystery-Manager, Island Sites, Dinosaurier-Referenz und Countdown-Tracker.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "14"
+  },
+  "authors": [{ "name": "laulauthelowest" }],
+  "esmodules": ["dino-dm-screen.mjs"],
+  "url": "https://github.com/laulauthelowest/dino-dm-screen",
+  "manifest": "https://raw.githubusercontent.com/laulauthelowest/dino-dm-screen/main/module.json",
+  "download": "https://github.com/laulauthelowest/dino-dm-screen/archive/refs/heads/main.zip"
+}

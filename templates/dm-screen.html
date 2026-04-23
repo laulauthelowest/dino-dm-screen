@@ -1,0 +1,286 @@
+<div class="dsn-wrap">
+<style>
+:root{--g:#2d5a27;--gl:#4a8c42;--y:#e8c84a;--r:#c0392b;--p:#fdf8ee;--b:#8b7355;--t:#2c2416}
+*{box-sizing:border-box;margin:0;padding:0}
+.dsn-wrap{font-family:"Signika",serif;background:var(--p);color:var(--t);padding:12px;font-size:13px;height:100%;overflow-y:auto}
+h2{color:var(--g);border-bottom:2px solid var(--g);padding-bottom:3px;margin:14px 0 8px;font-size:.9em;text-transform:uppercase;letter-spacing:1px}
+.dsn-note{font-size:.76em;color:var(--b);font-style:italic;margin-bottom:8px}
+.dsn-tabs{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px}
+.dsn-tab-btn{padding:6px 12px;background:#ddd;border:none;border-radius:4px 4px 0 0;cursor:pointer;font-family:inherit;font-size:.82em;font-weight:bold;color:#555;transition:all .15s}
+.dsn-tab-btn.active{background:var(--g);color:#fff}
+.dsn-tab-btn:hover:not(.active){background:var(--gl);color:#fff}
+.dsn-tab-content{display:none}
+.dsn-tab-content.active{display:block}
+.dsn-roll-btn{background:var(--g);color:#fff;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:.82em;font-weight:bold;margin:3px 3px 3px 0;transition:all .15s}
+.dsn-roll-btn:hover{background:var(--gl);transform:translateY(-1px)}
+.dsn-result-box{background:rgba(255,255,255,.8);border:2px solid var(--g);border-radius:6px;padding:8px 12px;margin-top:6px;font-size:.9em;display:none}
+.dsn-result-box.show{display:block}
+.dsn-result-number{font-size:1.3em;font-weight:bold;color:var(--g);margin-right:6px}
+.dsn-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.dsn-card{background:rgba(255,255,255,.7);border:1px solid var(--b);border-left:4px solid var(--g);border-radius:4px;padding:7px 9px}
+.dsn-card h4{color:var(--g);font-size:.84em;margin-bottom:3px}
+.dsn-card p{font-size:.76em;color:#555;font-style:italic;margin-bottom:3px}
+.dsn-card ul{padding-left:13px;font-size:.78em}
+.dsn-card li{margin-bottom:2px}
+.dsn-mystery-block{background:rgba(255,255,255,.7);border:1px solid var(--b);border-radius:6px;padding:9px 11px;margin-bottom:9px}
+.dsn-mystery-block h3{color:var(--g);font-size:.88em;margin-bottom:6px}
+.dsn-mystery-select{width:100%;padding:5px 7px;border:1px solid var(--b);border-radius:4px;font-family:inherit;font-size:.82em;background:#fff;margin-bottom:5px}
+.dsn-clue-box{background:rgba(232,200,74,.2);border:1px solid var(--y);border-radius:4px;padding:6px 9px;font-size:.8em;display:none}
+.dsn-clue-box.show{display:block}
+.dsn-clue-label{font-weight:bold;color:var(--b);font-size:.73em;text-transform:uppercase;letter-spacing:.5px}
+.dsn-ext-card{background:rgba(192,57,43,.06);border:2px solid var(--r);border-radius:6px;padding:9px 11px;margin-top:7px;display:none}
+.dsn-ext-card.show{display:block}
+.dsn-ext-card h4{color:var(--r);font-size:.92em;margin-bottom:5px}
+.dsn-ext-card p{font-size:.8em;margin-bottom:3px}
+.dsn-ext-card strong{color:var(--b)}
+.dsn-obstacle-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px dashed var(--b)}
+.dsn-obstacle-row:last-child{border-bottom:none}
+.dsn-obstacle-row input[type=text]{flex:1;border:none;border-bottom:1px dashed var(--b);background:transparent;font-family:inherit;font-size:.88em}
+.dsn-solved{text-decoration:line-through;opacity:.5}
+.dsn-countdown-section{background:rgba(255,255,255,.7);border:1px solid var(--b);border-radius:6px;padding:10px;margin-bottom:9px}
+.dsn-countdown-title{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.dsn-countdown-title input{flex:1;border:none;border-bottom:2px solid var(--b);background:transparent;font-family:inherit;font-size:.9em;font-weight:bold;padding:2px 3px}
+.dsn-boxes{display:flex;gap:7px;margin-bottom:6px}
+.dsn-box{width:42px;height:42px;border:3px solid var(--g);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.3em;transition:all .15s;background:#fff;user-select:none}
+.dsn-box.checked{background:var(--r);border-color:var(--r);color:#fff}
+.dsn-box:hover{border-color:#e67e22}
+.dsn-status{font-size:.75em;color:var(--b);font-style:italic}
+.dsn-reset-btn{background:none;border:1px solid var(--b);border-radius:4px;padding:2px 7px;cursor:pointer;font-size:.73em;color:var(--b);font-family:inherit}
+.dsn-reset-btn:hover{color:var(--r);border-color:var(--r)}
+#dsn-add-countdown{background:none;border:2px dashed var(--b);border-radius:6px;width:100%;padding:7px;cursor:pointer;color:var(--b);font-family:inherit;font-size:.82em;margin-top:3px;transition:all .15s}
+#dsn-add-countdown:hover{border-color:var(--g);color:var(--g)}
+hr{border:none;border-top:1px dashed var(--b);margin:10px 0}
+.dsn-dino-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.dsn-dino-card{background:rgba(255,255,255,.7);border:1px solid var(--b);border-radius:4px;padding:7px 9px}
+.dsn-dino-card h4{color:var(--g);font-size:.86em;font-weight:bold}
+.dsn-dino-card .inst{font-style:italic;font-size:.76em;color:#666;margin:2px 0 3px}
+.dsn-dino-card .app{font-size:.73em;color:var(--b);margin-bottom:3px}
+.dsn-dino-card ul{padding-left:13px;font-size:.76em}
+</style>
+
+<!-- TABS -->
+<div class="dsn-tabs">
+  <button class="dsn-tab-btn active" data-tab="zufall">🎲 Zufallstabellen</button>
+  <button class="dsn-tab-btn" data-tab="mystery">🔍 Mysteries</button>
+  <button class="dsn-tab-btn" data-tab="sites">🗺️ Island Sites</button>
+  <button class="dsn-tab-btn" data-tab="dinos">🦖 Dinosaurier</button>
+  <button class="dsn-tab-btn" data-tab="countdown">⏱️ Countdown</button>
+</div>
+
+<!-- TAB ZUFALLSTABELLEN -->
+<div class="dsn-tab-content active" id="dsn-tab-zufall">
+  <h2>Gerüchte</h2>
+  <p class="dsn-note">Gib jedem Hero ein Gerücht. Frag wie sie es erfahren haben.</p>
+  <button class="dsn-roll-btn" data-table="rumor">🎲 Gerücht</button>
+  <div class="dsn-result-box" data-result="rumor"></div>
+
+  <h2>Wetter</h2>
+  <button class="dsn-roll-btn" data-table="weather">🎲 Wetter</button>
+  <div class="dsn-result-box" data-result="weather"></div>
+
+  <h2>NPC-Ziel</h2>
+  <p class="dsn-note">Was will der NPC? Nutze das wenn Heroes versuchen ihn zu überzeugen.</p>
+  <button class="dsn-roll-btn" data-table="npcgoal">🎲 NPC-Ziel</button>
+  <div class="dsn-result-box" data-result="npcgoal"></div>
+
+  <h2>Was kann der NPC anbieten?</h2>
+  <button class="dsn-roll-btn" data-table="npcoffer">🎲 NPC-Angebot</button>
+  <div class="dsn-result-box" data-result="npcoffer"></div>
+
+  <h2>Dino-Spitzname</h2>
+  <button class="dsn-roll-btn" data-table="dinoname">🎲 Spitzname</button>
+  <div class="dsn-result-box" data-result="dinoname"></div>
+
+  <h2>Mysteriöse Organisation</h2>
+  <button class="dsn-roll-btn" data-table="org">🎲 Organisation</button>
+  <div class="dsn-result-box" data-result="org"></div>
+
+  <h2>Dino-Gimmick</h2>
+  <p class="dsn-note">Gibt jedem Dino eine besondere Eigenschaft!</p>
+  <button class="dsn-roll-btn" data-table="gimmick">🎲 Gimmick</button>
+  <div class="dsn-result-box" data-result="gimmick"></div>
+
+  <h2>Startlocation</h2>
+  <button class="dsn-roll-btn" data-table="location">🎲 Wo sind wir?</button>
+  <div class="dsn-result-box" data-result="location"></div>
+
+  <h2>Fluchtweg</h2>
+  <button class="dsn-roll-btn" data-table="escape">🎲 Fluchtweg</button>
+  <div class="dsn-result-box" data-result="escape"></div>
+
+  <h2>Hindernis</h2>
+  <button class="dsn-roll-btn" data-table="obstacle">🎲 Hindernis</button>
+  <div class="dsn-result-box" data-result="obstacle"></div>
+
+  <h2>Mystery-Frage</h2>
+  <button class="dsn-roll-btn" data-table="mysteryq">🎲 Mystery</button>
+  <div class="dsn-result-box" data-result="mysteryq"></div>
+</div>
+
+<!-- TAB MYSTERIES -->
+<div class="dsn-tab-content" id="dsn-tab-mystery">
+  <h2>Primäre Mysteries</h2>
+  <p class="dsn-note">Wähle eine Antwort – der erste Hinweis erscheint automatisch.</p>
+
+  <div class="dsn-mystery-block">
+    <h3>🦕 Wie gibt es lebende Dinosaurier?</h3>
+    <select class="dsn-mystery-select" data-type="dino">
+      <option value="">– Antwort wählen –</option>
+      <option value="Genetisch erschaffen von Menschen.|Hinweis: Ein Dinosaurier hat eine Art 'Tag' – ein echtes Etikett, Tätowierung, etc.">1. Genetisch erschaffen</option>
+      <option value="Nie ausgestorben – die Insel ist eine verlorene Welt.|Hinweis: Eine antike Ruine zeigt Menschen und Dinosaurier zusammen.">2. Nie ausgestorben (Lost World)</option>
+      <option value="Es ist eine Raum-Zeit-Anomalie.|Hinweis: Etwas aus einer anderen Zeit – z.B. ein toter römischer Soldat oder eine futuristische Maschine.">3. Raum-Zeit-Anomalie</option>
+      <option value="Es sind ausgefeilte Roboter-Fälschungen.|Hinweis: Ein Dinosaurier verhält sich kurz seltsam, fast als würde er glitchen.">4. Roboter-Fälschungen</option>
+      <option value="Umgekehrte Evolution durch den Klimawandel.|Hinweis: Das Wetter auf der Insel ist unheimlich.">5. Reverse Evolution</option>
+      <option value="Durch den Klimawandel geweckt (Eis schmilzt).|Hinweis: Sie finden Gletscher oder Eishöhlen mit leeren, geschmolzenen Hohlräumen.">6. Durch Klimawandel geweckt</option>
+    </select>
+    <div class="dsn-clue-box" id="dsn-clue-dino"></div>
+  </div>
+
+  <div class="dsn-mystery-block">
+    <h3>🏢 Was ist der Zweck des Komplexes?</h3>
+    <select class="dsn-mystery-select" data-type="complex">
+      <option value="">– Antwort wählen –</option>
+      <option value="Genetische Erschaffung von Dinosauriern (Wissenschaft / Militär / Pharma / Touristenattraktion).|Hinweis: Zerfallenes Notizbuch / Soldatenleiche / Pharma-Schild / alte Broschüren für 'Dino Island'.">1. Dinosaurier erschaffen</option>
+      <option value="Unabhängige Forschungsstation (Klimawandel, Vulkan, elektromagnetische Anomalien).|Hinweis: Wissenschaftliches Equipment, das nichts mit Dinosauriern zu tun hat.">2. Forschungsstation</option>
+      <option value="VR-System: Menschen steuern Dinosaurier aus der Ferne und jagen Menschen.|Hinweis: Ein Bunker voller Liegestühle und defekter VR-Headsets.">3. VR-Jagd-System</option>
+      <option value="Eine utopische Kolonie.|Hinweis: Aufgegebene Familienwohnheime und kleine Gartenflächen.">4. Utopische Kolonie</option>
+      <option value="Erschaffung von Dinosaurier-Mensch-Hybrid-Soldaten.|Hinweis: Eine tote Person mit schuppiger Haut.">5. Hybrid-Soldaten</option>
+      <option value="Ein Themenpark.|Hinweis: Ein Besucherzentrum mit einem grellen Schild für 'Dino Island'.">6. Themenpark</option>
+    </select>
+    <div class="dsn-clue-box" id="dsn-clue-complex"></div>
+  </div>
+
+  <div class="dsn-mystery-block">
+    <h3>💥 Was ist schiefgelaufen?</h3>
+    <select class="dsn-mystery-select" data-type="wrong">
+      <option value="">– Antwort wählen –</option>
+      <option value="Dinos wurden absichtlich eingeschleust.|Hinweis: Eine leere Dino-Versandkiste – der Dino wurde rausgelassen, nicht entkommen.">1. Absichtliche Einschleusung</option>
+      <option value="Sabotage durch einen Rivalen, Öko-Aktivisten oder unzufriedenen Mitarbeiter.|Hinweis: Ein NPC der nicht hierher zu gehören scheint.">2. Sabotage</option>
+      <option value="Die Dinosaurier entwickelten unvorhergesehene, katastrophale Eigenschaften.|Hinweis: Ein Dinosaurier mit einer schockierenden Eigenschaft.">3. Unvorhergesehene Mutation</option>
+      <option value="Die Arbeiter revoltierten.|Hinweis: Ein mysteriöses handgemaltes Schild an einer Wand oder einem Felsen.">4. Arbeiter-Revolte</option>
+      <option value="Ein Stromausfall setzte die Dinosaurier frei.|Hinweis: Ein Riss im Elektrozaun.">5. Stromausfall</option>
+      <option value="Ein Ausbruch der Dino-Grippe.|Hinweis: Ein NPC stirbt/starb hustend Blut.">6. Dino-Grippe-Ausbruch</option>
+    </select>
+    <div class="dsn-clue-box" id="dsn-clue-wrong"></div>
+  </div>
+
+  <hr>
+  <h2>Extinction Event</h2>
+  <p class="dsn-note">Wenn Heroes das erste Hindernis überwinden – alle Heroes ADVANCE zuerst!</p>
+  <select class="dsn-mystery-select" id="dsn-extinction-select">
+    <option value="">– Extinction Event wählen –</option>
+    <option value="volcano">🌋 Der Vulkan bricht aus!</option>
+    <option value="monsoon">🌧️ Ein Monsun!</option>
+    <option value="evolved">🧬 Die Dinosaurier haben sich entwickelt!</option>
+    <option value="killteam">💀 Kill-Team geschickt!</option>
+    <option value="mainland">🚢 Dinos erreichen das Festland!</option>
+    <option value="timerift">⚡ Zeit-Anomalie kollabiert!</option>
+  </select>
+  <div class="dsn-ext-card" id="dsn-ext-card"></div>
+
+  <hr>
+  <h2>Obstacles</h2>
+  <p class="dsn-note">Wenn beide abgehakt sind → Daring Escape!</p>
+  <div class="dsn-mystery-block">
+    <div class="dsn-obstacle-row">
+      <input type="checkbox" class="dsn-obstacle-check">
+      <input type="text" placeholder="Hindernis 1…">
+    </div>
+    <div class="dsn-obstacle-row">
+      <input type="checkbox" class="dsn-obstacle-check">
+      <input type="text" placeholder="Hindernis 2…">
+    </div>
+  </div>
+</div>
+
+<!-- TAB ISLAND SITES -->
+<div class="dsn-tab-content" id="dsn-tab-sites">
+  <h2>Natürliche Orte</h2>
+  <div class="dsn-grid">
+    <div class="dsn-card"><h4>🏖️ Strand</h4><p>Wellen, Salzluft</p><ul><li>Trümmer, Krabben, Licht am Horizont</li><li>→ Flosse bricht die Wasseroberfläche</li><li>→ Schrei aus dem Dschungel</li></ul></div>
+    <div class="dsn-card"><h4>🕳️ Höhle</h4><p>Gespenstische Stille</p><ul><li>Dino-Nest, geheimer Eingang, CERATOPSIDEN</li><li>→ Felsen blockieren Ausgang</li><li>→ Sind das Stimmen?</li></ul></div>
+    <div class="dsn-card"><h4>🌿 Dschungel</h4><p>Schwüle Luft, Insekten</p><ul><li>Komplex-Eingang, Scout, Leiche</li><li>→ Im Labyrinth drehen</li><li>→ Undurchdringliches Gestrüpp</li></ul></div>
+    <div class="dsn-card"><h4>🏔️ Berge</h4><p>Wind, einschüchternde Klippen</p><ul><li>Radioturm, Absturzflugzeug, PTEROSAURIER</li><li>→ In Abgrund stoßen</li><li>→ Regen macht Stein glitschig</li></ul></div>
+    <div class="dsn-card"><h4>🌊 See</h4><p>Kühle Brise, Unterwasserschatten</p><ul><li>Ruderboot, Bootshaus, AQUATISCHE KREATUREN</li><li>→ Ins Wasser stoßen</li><li>→ Überqueren ist gefährlich</li></ul></div>
+    <div class="dsn-card"><h4>🌊 Fluss</h4><p>Stromschnellen, kalte Gischt</p><ul><li>Floß, Fische, Eingang hinter Wasserfall</li><li>→ Ins Wasser stoßen</li><li>→ Regen überschwemmt</li></ul></div>
+    <div class="dsn-card"><h4>🏞️ Offenes Gelände</h4><p>Hohes Gras</p><ul><li>Geheimer Eingang, Fahrzeug, SAUROPODEN</li><li>→ Über das Feld jagen</li><li>→ Von oben angreifen</li></ul></div>
+    <div class="dsn-card"><h4>🌫️ Sumpf</h4><p>Drückende Schwüle</p><ul><li>Luftboot, SPINOSAURIDEN</li><li>→ In Treibsand gefangen</li><li>→ Etwas Nützliches im Schlamm</li></ul></div>
+  </div>
+
+  <h2>Künstliche Orte</h2>
+  <div class="dsn-grid">
+    <div class="dsn-card"><h4>🚝 Monorail</h4><p>Riesige Betonsäulen</p><ul><li>Digitale Karte, schneller Transport</li><li>→ Strecke zerstört</li><li>→ Steuerung defekt</li></ul></div>
+    <div class="dsn-card"><h4>⚡ Kraftwerk</h4><p>Enge Tunnel, Dampf</p><ul><li>Strom wiederherstellen, Taschenlampen</li><li>→ Sackgasse</li><li>→ Nicht alle Werkzeuge da</li></ul></div>
+    <div class="dsn-card"><h4>📻 Radioturm</h4><p>Knarrendes Metall</p><ul><li>Walkie-Talkies, Steuerpanel</li><li>→ Sendet mysteriöses Signal</li><li>→ Braucht Reparatur</li></ul></div>
+    <div class="dsn-card"><h4>🏠 Schmugglerversteck</h4><p>Gut versteckte Hütte</p><ul><li>Waffen, Geld, kleines Flugzeug/Boot</li><li>→ Falle auslösen</li><li>→ Schmuggler kehren zurück</li></ul></div>
+    <div class="dsn-card"><h4>💻 Kontrollraum</h4><p>Dutzende Bildschirme</p><ul><li>Zugang zu Türen, Schlössern, Kameras</li><li>→ Proprietäres Betriebssystem</li><li>→ Kameras zeigen etwas Schlechtes</li></ul></div>
+    <div class="dsn-card"><h4>🥚 Brutanlage</h4><p>Wärme der Brutlampen</p><ul><li>Dino-Ei, Baby-Dino, STEGOSAURIDEN</li><li>→ Mutter-Dino kommt</li><li>→ Etwas stimmt nicht</li></ul></div>
+    <div class="dsn-card"><h4>🔬 Labor</h4><p>Präparate in Tanks</p><ul><li>Proben, Forschungsnotizen, XENOSAURUS</li><li>→ Ein Exemplar erwacht</li><li>→ Etwas das gegen Dinos kämpfen lässt</li></ul></div>
+    <div class="dsn-card"><h4>🏥 Krankenstation</h4><p>Ungeordnete Regale</p><ul><li>Arzt, medizinische Vorräte</li><li>→ Dino hat Drogen geschluckt</li><li>→ Andere wollen die Medizin</li></ul></div>
+  </div>
+</div>
+
+<!-- TAB DINOSAURIER -->
+<div class="dsn-tab-content" id="dsn-tab-dinos">
+  <h2>Dinosaurier-Referenz</h2>
+  <div class="dsn-dino-grid">
+    <div class="dsn-dino-card"><h4>🦖 Theropoden (groß)</h4><div class="app">Anzahl: 1… oder 2</div><div class="inst">Instinkt: Fleisch fressen</div><ul><li>Beute erschnüffeln</li><li>Mit immenser Kraft beißen</li><li>Alles auf dem Weg zerstören</li><li>Unermüdlich verfolgen</li></ul></div>
+    <div class="dsn-dino-card"><h4>🐾 Dromaeosauriden</h4><div class="app">Anzahl: 3–5</div><div class="inst">Instinkt: Beute jagen</div><ul><li>Als Rudel zusammenarbeiten</li><li>Mit Geschwindigkeit bewegen</li><li>Komplexes Problem lösen</li><li>Mit Klauen schneiden</li></ul></div>
+    <div class="dsn-dino-card"><h4>🛡️ Ankylosauriden</h4><div class="app">Anzahl: Einzelgänger</div><div class="inst">Instinkt: Bleib wo du bist</div><ul><li>Schwanzkeule</li><li>Verheerenden Schlag abschütteln</li><li>Sich ducken und nicht bewegen</li></ul></div>
+    <div class="dsn-dino-card"><h4>🦏 Ceratopsiden</h4><div class="app">Anzahl: Familieneinheit</div><div class="inst">Instinkt: Junge verteidigen</div><ul><li>Trampeln</li><li>Mit Hörnern aufspießen</li><li>Aufladen</li></ul></div>
+    <div class="dsn-dino-card"><h4>🌊 Spinosauriden</h4><div class="app">Anzahl: 1</div><div class="inst">Instinkt: Leichte Beute abfangen</div><ul><li>Aus dem Wasser auftauchen</li><li>Ins Wasser zurückziehen</li><li>Mit Kiefern zubeißen</li></ul></div>
+    <div class="dsn-dino-card"><h4>🦆 Hadrosauriden</h4><div class="app">Anzahl: 5–15</div><div class="inst">Instinkt: Raubtiere vermeiden</div><ul><li>In Panik geraten</li><li>Stampede!</li></ul></div>
+    <div class="dsn-dino-card"><h4>🦅 Pterosaurier</h4><div class="app">Anzahl: Schwarm</div><div class="inst">Instinkt: Etwas fressen schnappen</div><ul><li>Von oben angreifen</li><li>Etwas wegtragen</li><li>Aus großer Höhe fallen lassen</li></ul></div>
+    <div class="dsn-dino-card"><h4>🐘 Sauropoden</h4><div class="app">Anzahl: 1 oder Herde</div><div class="inst">Instinkt: Von Baumwipfeln fressen</div><ul><li>Etwas umwerfen</li><li>Umherstampfen, Winziges ignorieren</li><li>Mit Schwanz peitschen</li></ul></div>
+    <div class="dsn-dino-card"><h4>🦂 Kleine Theropoden</h4><div class="app">Anzahl: Erst 1–2, dann zu viele</div><div class="inst">Instinkt: Größere Beute erlegen</div><ul><li>Den Schwarm rufen</li><li>Mit Zahlen überwältigen</li><li>Durch winzige Gänge entkommen</li></ul></div>
+    <div class="dsn-dino-card"><h4>🌊 Aquatische Kreaturen</h4><div class="app">Anzahl: 1</div><div class="inst">Instinkt: Alles im Wasser fressen</div><ul><li>Von unten zuschlagen</li><li>In die Tiefe ziehen</li></ul></div>
+    <div class="dsn-dino-card"><h4>🌿 Therizinosauren</h4><div class="app">Anzahl: Familieneinheit</div><div class="inst">Instinkt: Pflanzen ernten, Revier verteidigen</div><ul><li>Mit riesigen Klauen schlagen</li><li>Mit Füßen trampeln</li></ul></div>
+    <div class="dsn-dino-card"><h4>❓ Xenosaurus</h4><div class="app">Anzahl: ???</div><div class="inst">Instinkt: ???</div><ul><li>Etwas tun was Dinos nicht können</li><li><em>Für Extinction Event aufheben!</em></li></ul></div>
+  </div>
+  <hr>
+  <h2>🎲 Gimmick würfeln</h2>
+  <button class="dsn-roll-btn" data-table="gimmick">🎲 Gimmick</button>
+  <div class="dsn-result-box" data-result="gimmick"></div>
+</div>
+
+<!-- TAB COUNTDOWN -->
+<div class="dsn-tab-content" id="dsn-tab-countdown">
+  <h2>⏱️ Countdown-Tracker</h2>
+  <p class="dsn-note">Bei jedem Miss (6–) oder zu langem Zögern: ein Kästchen abhaken. Beim dritten: das Schlimmste passiert!</p>
+  <div id="dsn-countdown-list">
+    <div class="dsn-countdown-section">
+      <div class="dsn-countdown-title">
+        <input type="text" placeholder="Name des Countdowns (z.B. Vulkan bricht aus)" />
+        <button class="dsn-reset-btn">↺ Reset</button>
+      </div>
+      <div class="dsn-boxes">
+        <div class="dsn-box">☐</div>
+        <div class="dsn-box">☐</div>
+        <div class="dsn-box">☐</div>
+      </div>
+      <div class="dsn-status">Noch kein Kästchen abgehakt.</div>
+    </div>
+  </div>
+  <button id="dsn-add-countdown">+ Neuen Countdown hinzufügen</button>
+
+  <hr>
+  <h2>DM-Moves Schnellreferenz</h2>
+  <p class="dsn-note">Nutze diese Moves bei Miss (6–), zu langem Planen, oder wenn Heroes dich anschauen.</p>
+  <div class="dsn-card">
+    <ul>
+      <li>Zeichen eines nahen Dinosauriers (Fußabdrücke, Brüllen…)</li>
+      <li>Ein Dinosaurier taucht auf! <strong>Gib ihm ein Gimmick!</strong></li>
+      <li>Sie verletzen – wie abgemacht</li>
+      <li>Ihre Verletzungen verursachen Probleme</li>
+      <li>Einen nützlichen NPC einführen. <em>Gib ihm ein Ziel!</em></li>
+      <li>Einen nützlichen NPC töten</li>
+      <li>Sie desorientieren</li>
+      <li>Ihnen anbieten was sie brauchen, mit Gefahr im Weg</li>
+      <li>Ihnen sagen was sie brauchen und sie herausfinden lassen</li>
+      <li>Sie aufteilen</li>
+      <li>Etwas Mysteriöses enthüllen</li>
+      <li>Zeit vergeht (Nacht bricht herein, Gelegenheit läuft ab…)</li>
+    </ul>
+  </div>
+</div>
+</div>
